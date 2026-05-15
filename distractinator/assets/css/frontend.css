@@ -1,0 +1,219 @@
+/* Distractinator Plugin - Frontend Styles */
+
+#distractinator-wrap {
+	--dz-bg: #1a1a2e;
+	--dz-btn: #e94560;
+	--dz-text: #eaeaea;
+	--dz-radius: 12px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 80vh;
+	background: var(--dz-bg);
+	color: var(--dz-text);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	padding: 2rem 1rem;
+	box-sizing: border-box;
+	border-radius: var(--dz-radius);
+	overflow: hidden;
+	position: relative;
+}
+
+/* Subtle animated gradient overlay */
+#distractinator-wrap::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(ellipse at 20% 50%, rgba(233,69,96,.15) 0%, transparent 60%),
+	            radial-gradient(ellipse at 80% 50%, rgba(22, 160, 230, .10) 0%, transparent 60%);
+	pointer-events: none;
+}
+
+#distractinator-stage {
+	text-align: center;
+	z-index: 1;
+}
+
+#distractinator-heading {
+	font-size: clamp(2rem, 6vw, 4rem);
+	font-weight: 800;
+	letter-spacing: -1px;
+	margin: 0 0 0.4em;
+	line-height: 1.1;
+	background: linear-gradient(135deg, #fff 30%, var(--dz-btn) 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+#distractinator-subheading {
+	font-size: clamp(1rem, 2.5vw, 1.25rem);
+	opacity: .7;
+	margin: 0 0 2.5rem;
+}
+
+#distractinator-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--dz-btn);
+	color: #fff;
+	border: none;
+	border-radius: 50px;
+	padding: 1rem 2.5rem;
+	font-size: clamp(1rem, 2.5vw, 1.2rem);
+	font-weight: 700;
+	cursor: pointer;
+	transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+	box-shadow: 0 4px 24px rgba(233,69,96,.4);
+	letter-spacing: .3px;
+}
+
+#distractinator-btn:hover {
+	transform: translateY(-2px) scale(1.03);
+	box-shadow: 0 8px 32px rgba(233,69,96,.55);
+}
+
+#distractinator-btn:active {
+	transform: scale(.97);
+}
+
+#distractinator-btn:disabled {
+	opacity: .6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+/* Spinner */
+.dz-spinner {
+	width: 18px;
+	height: 18px;
+	border: 3px solid rgba(255,255,255,.3);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: dz-spin .7s linear infinite;
+	flex-shrink: 0;
+}
+
+@keyframes dz-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* Counter */
+#distractinator-counter {
+	margin-top: 1.5rem;
+	font-size: .85rem;
+	opacity: .45;
+	min-height: 1.4em;
+}
+
+/* Submission section */
+#distractinator-submit-wrap {
+	margin-top: 3rem;
+	text-align: center;
+	z-index: 1;
+	width: 100%;
+	max-width: 420px;
+}
+
+.dz-link-btn {
+	background: none;
+	border: none;
+	color: var(--dz-text);
+	opacity: .45;
+	font-size: .85rem;
+	cursor: pointer;
+	transition: opacity .2s;
+	padding: 0;
+}
+
+.dz-link-btn:hover { opacity: .9; }
+
+#distractinator-submit-form {
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: .75rem;
+}
+
+#distractinator-submit-form input {
+	background: rgba(255,255,255,.08);
+	border: 1px solid rgba(255,255,255,.15);
+	border-radius: 8px;
+	color: #fff;
+	padding: .65rem 1rem;
+	font-size: .95rem;
+	width: 100%;
+	box-sizing: border-box;
+	transition: border-color .2s;
+}
+
+#distractinator-submit-form input::placeholder { opacity: .5; }
+#distractinator-submit-form input:focus {
+	outline: none;
+	border-color: var(--dz-btn);
+}
+
+.dz-submit-btn {
+	background: transparent;
+	border: 2px solid var(--dz-btn);
+	color: var(--dz-btn);
+	border-radius: 8px;
+	padding: .6rem 1.5rem;
+	font-size: .95rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background .2s, color .2s;
+}
+
+.dz-submit-btn:hover {
+	background: var(--dz-btn);
+	color: #fff;
+}
+
+.dz-meta {
+	color: var(--dz-text);
+	font-size: .85rem;
+	opacity: .6;
+}
+
+/* "Going to…" overlay */
+#dz-redirect-overlay {
+	position: fixed;
+	inset: 0;
+	background: var(--dz-bg);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 99999;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .4s ease;
+}
+
+#dz-redirect-overlay.active {
+	opacity: 1;
+	pointer-events: all;
+}
+
+#dz-redirect-overlay .dz-goto-text {
+	font-size: clamp(1.2rem, 4vw, 2rem);
+	font-weight: 700;
+	text-align: center;
+	color: #fff;
+	opacity: .85;
+}
+
+#dz-redirect-overlay .dz-goto-url {
+	margin-top: .5rem;
+	font-size: .9rem;
+	opacity: .4;
+	color: #fff;
+}
+
+@media (max-width: 480px) {
+	#distractinator-btn { padding: .85rem 1.8rem; }
+}
