@@ -11,6 +11,7 @@ class Distractinator_Admin {
 		add_action( 'save_post_distractinator_site', [ $this, 'save_meta' ] );
 		add_action( 'admin_post_distractinator_approve', [ $this, 'approve_submission' ] );
 		add_action( 'admin_post_distractinator_reject', [ $this, 'reject_submission' ] );
+		add_action( 'admin_post_distractinator_mark_live', [ $this, 'handle_mark_live' ] );
 		add_action( 'admin_post_distractinator_bulk_sites', [ $this, 'handle_bulk_sites' ] );
 		add_action( 'admin_post_distractinator_bulk_submissions', [ $this, 'handle_bulk_submissions' ] );
 		add_action( 'admin_notices', [ $this, 'pending_notice' ] );
@@ -145,6 +146,9 @@ class Distractinator_Admin {
 						<td>
 							<a href="<?php echo esc_url( get_edit_post_link( $id ) ); ?>">Edit</a> |
 							<a href="<?php echo esc_url( get_delete_post_link( $id ) ); ?>" onclick="return confirm('Delete this site?')">Delete</a>
+							<?php if ( $dead ) : ?>
+							| <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=distractinator_mark_live&id=' . $id ), 'distractinator_mark_live_' . $id ) ); ?>" style="color:green">Mark as Live</a>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endwhile; wp_reset_postdata(); else : ?>
@@ -267,6 +271,19 @@ class Distractinator_Admin {
 	// Bulk action handlers
 	// -------------------------------------------------------------------------
 
+	public function handle_mark_live() {
+		$id = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : 0;
+		if ( ! $id || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ?? '' ) ), 'distractinator_mark_live_' . $id ) ) {
+			wp_die( 'Invalid request.' );
+		}
+		if ( get_post_type( $id ) !== 'distractinator_site' ) wp_die( 'Invalid site.' );
+		delete_post_meta( $id, '_distractinator_dead' );
+		delete_post_meta( $id, '_distractinator_dead_date' );
+		delete_post_meta( $id, '_distractinator_report_count' );
+		wp_redirect( admin_url( 'admin.php?page=distractinator&bulk_msg=live&bulk_count=1' ) );
+		exit;
+	}
+
 	public function handle_bulk_sites() {
 		if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Unauthorized.' );
 		check_admin_referer( 'distractinator_bulk_sites' );
@@ -274,19 +291,26 @@ class Distractinator_Admin {
 		$bulk_action = sanitize_key( $_POST['bulk_action'] ?? '' );
 		$ids         = array_map( 'absint', (array) ( $_POST['post_ids'] ?? [] ) );
 
-		if ( empty( $ids ) || $bulk_action !== 'delete' ) {
+		if ( empty( $ids ) || ! in_array( $bulk_action, [ 'delete', 'mark_live' ], true ) ) {
 			wp_redirect( admin_url( 'admin.php?page=distractinator&bulk_msg=none' ) );
 			exit;
 		}
 
-		$deleted = 0;
+		$count = 0;
 		foreach ( $ids as $id ) {
-			if ( get_post_type( $id ) === 'distractinator_site' && wp_delete_post( $id, true ) ) {
-				$deleted++;
+			if ( get_post_type( $id ) !== 'distractinator_site' ) continue;
+			if ( $bulk_action === 'delete' ) {
+				if ( wp_delete_post( $id, true ) ) $count++;
+			} elseif ( $bulk_action === 'mark_live' ) {
+				delete_post_meta( $id, '_distractinator_dead' );
+				delete_post_meta( $id, '_distractinator_dead_date' );
+				delete_post_meta( $id, '_distractinator_report_count' );
+				$count++;
 			}
 		}
 
-		wp_redirect( admin_url( 'admin.php?page=distractinator&bulk_msg=deleted&bulk_count=' . $deleted ) );
+		$msg = $bulk_action === 'delete' ? 'deleted' : 'live';
+		wp_redirect( admin_url( 'admin.php?page=distractinator&bulk_msg=' . $msg . '&bulk_count=' . $count ) );
 		exit;
 	}
 
@@ -411,6 +435,7 @@ class Distractinator_Admin {
 
 		$text = match ( $msg ) {
 			'deleted'  => $count . ' site(s) permanently deleted.',
+			'live'     => $count . ' site(s) marked as live and re-added to the pool.',
 			'approve'  => $count . ' submission(s) approved and published.',
 			'reject'   => $count . ' submission(s) rejected and deleted.',
 			default    => '',
@@ -510,7 +535,7 @@ class Distractinator_Admin {
 
 	private function render_bulk_bar( string $context ): void {
 		if ( $context === 'sites' ) {
-			$options = '<option value="">Bulk Actions</option><option value="delete">Delete</option>';
+			$options = '<option value="">Bulk Actions</option><option value="mark_live">Mark as Live</option><option value="delete">Delete</option>';
 		} else {
 			$options = '<option value="">Bulk Actions</option><option value="approve">Approve</option><option value="reject">Reject</option>';
 		}
