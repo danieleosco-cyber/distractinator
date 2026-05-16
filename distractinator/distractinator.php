@@ -22,6 +22,7 @@ require_once DISTRACTINATOR_PATH . 'includes/class-cron.php';
 require_once DISTRACTINATOR_PATH . 'includes/class-shortcode.php';
 require_once DISTRACTINATOR_PATH . 'includes/class-import.php';
 require_once DISTRACTINATOR_PATH . 'includes/class-dashboard.php';
+require_once DISTRACTINATOR_PATH . 'includes/class-submission-shortcode.php';
 
 new Distractinator_CPT();
 new Distractinator_Admin();
@@ -30,6 +31,7 @@ new Distractinator_Cron();
 new Distractinator_Shortcode();
 new Distractinator_Import();
 new Distractinator_Dashboard();
+new Distractinator_Submission_Shortcode();
 
 register_activation_hook( __FILE__, 'distractinator_activate' );
 register_deactivation_hook( __FILE__, 'distractinator_deactivate' );

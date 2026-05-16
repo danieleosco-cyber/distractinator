@@ -1,0 +1,70 @@
+.dz-submit-standalone {
+	max-width: 480px;
+	margin: 0 auto;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dz-submit-heading {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin: 0 0 0.25em;
+}
+
+.dz-submit-subheading {
+	color: #555;
+	margin: 0 0 1.5rem;
+}
+
+.dz-submit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.dz-submit-form label {
+	font-weight: 600;
+	font-size: 0.9rem;
+	margin-bottom: -0.4rem;
+}
+
+.dz-optional {
+	font-weight: 400;
+	color: #888;
+	font-size: 0.85em;
+}
+
+.dz-submit-form input[type="url"],
+.dz-submit-form input[type="text"] {
+	width: 100%;
+	padding: 0.6rem 0.9rem;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	font-size: 0.95rem;
+	box-sizing: border-box;
+	transition: border-color 0.2s;
+}
+
+.dz-submit-form input:focus {
+	outline: none;
+	border-color: #e94560;
+}
+
+.dz-submit-form .dz-submit-btn {
+	align-self: flex-start;
+	background: #e94560;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	padding: 0.65rem 1.75rem;
+	font-size: 0.95rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: opacity 0.2s;
+}
+
+.dz-submit-form .dz-submit-btn:hover { opacity: 0.85; }
+
+.dz-submit-closed {
+	color: #888;
+	font-style: italic;
+}
