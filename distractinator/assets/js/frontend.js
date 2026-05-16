@@ -51,7 +51,11 @@
 					sessionStorage.setItem( 'dz_clicks', clickCount );
 
 					setTimeout( function () {
-						window.open( url, '_blank', 'noopener,noreferrer' );
+						if ( window.innerWidth >= 1000 ) {
+							window.open( url, '_blank', 'noopener,noreferrer' );
+						} else {
+							window.location.href = url;
+						}
 						overlay.removeClass( 'active' );
 
 						btn.prop( 'disabled', false );
