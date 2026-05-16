@@ -1,0 +1,17 @@
+# Zips
+*.zip
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
