@@ -8,6 +8,7 @@ class Distractinator_API {
 		add_action( 'wp_ajax_nopriv_distractinator_random', [ $this, 'ajax_random' ] );
 		add_action( 'wp_ajax_distractinator_random', [ $this, 'ajax_random' ] );
 		add_action( 'wp_ajax_nopriv_distractinator_submit', [ $this, 'ajax_submit' ] );
+		add_action( 'wp_ajax_distractinator_submit', [ $this, 'ajax_submit' ] );
 		add_action( 'wp_ajax_nopriv_distractinator_report', [ $this, 'ajax_report' ] );
 		add_action( 'wp_ajax_distractinator_report', [ $this, 'ajax_report' ] );
 	}
