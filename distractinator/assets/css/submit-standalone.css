@@ -2,6 +2,7 @@
 	max-width: 480px;
 	margin: 0 auto;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	box-shadow: none;
 }
 
 .dz-submit-heading {
@@ -42,6 +43,7 @@
 	font-size: 0.95rem;
 	box-sizing: border-box;
 	transition: border-color 0.2s;
+	box-shadow: none;
 }
 
 .dz-submit-form input:focus {
@@ -60,6 +62,7 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: opacity 0.2s;
+	box-shadow: none;
 }
 
 .dz-submit-form .dz-submit-btn:hover { opacity: 0.85; }
